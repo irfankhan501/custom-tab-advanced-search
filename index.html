@@ -28,8 +28,9 @@
             type: "SmartViewsAdvSearchMessage",
             action: "setAdvancedSearch",
             payLoad: {
-              AdvancedSearchJSON: "http://127.0.0.1:5500/index.html",
-              PopupStyles: "height: 500px; width: 600px;",
+              AdvancedSearchJSON: "{}",
+              AdvancedSearchText:
+                '{"ConditionOperator":"or","Conditions":["<span class = \\"query-readable-row\\">Telephony and SMS</span>"]}',
             },
           },
           "*"
@@ -66,7 +67,7 @@
       }
       function setInitialCustomTabData(data) {
         document.getElementById("refreshtime").innerText =
-          data.AdvancedSearchJSON;
+          data.AdvancedSearchText;
       }
     </script>
   </body>
