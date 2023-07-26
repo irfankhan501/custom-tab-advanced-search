@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <title>Custom Tab Advanced Search</title>
+  </head>
+  <body>
+    <div class="grid-container" style="height: 1500px">
+      <h1>Custom Tab Advanced Search</h1>
+      <p id="querycontent"></p>
+      <button onclick="dataRequest()">Initial Data Request</button>
+      <button onclick="setADS()">set advanced Search</button>
+      <button onclick="closeADS()">close advanced Search</button>
+      <p id="refreshtime"></p>
+    </div>
+    <script>
+      function dataRequest() {
+        window.parent.postMessage(
+          {
+            type: "SmartViewsAdvSearchMessage",
+            action: "initialDataRequest",
+            payLoad: {},
+          },
+          "*"
+        );
+      }
+      function setADS() {
+        window.parent.postMessage(
+          {
+            type: "SmartViewsAdvSearchMessage",
+            action: "setAdvancedSearch",
+            payLoad: {
+              AdvancedSearchJSON: "http://127.0.0.1:5500/index.html",
+              PopupStyles: "height: 500px; width: 600px;",
+            },
+          },
+          "*"
+        );
+      }
+      function closeADS() {
+        window.parent.postMessage(
+          {
+            type: "SmartViewsAdvSearchMessage",
+            action: "closeAdvancedSearch",
+            payLoad: {},
+          },
+          "*"
+        );
+      }
+
+      window.addEventListener("message", (event) =>
+        handleCustomTabContainerMessage(event)
+      );
+
+      function handleCustomTabContainerMessage(event) {
+        const actionHandlersMap = {
+          setInitialCustomTabData: setInitialCustomTabData,
+        };
+
+        if (
+          event &&
+          event.data &&
+          event.data.type === "SmartViewsContainerMessage" &&
+          event.data.action
+        ) {
+          actionHandlersMap[event.data.action](event.data.payLoad);
+        }
+      }
+      function setInitialCustomTabData(data) {
+        document.getElementById("refreshtime").innerText =
+          data.AdvancedSearchJSON;
+      }
+    </script>
+  </body>
+</html>
